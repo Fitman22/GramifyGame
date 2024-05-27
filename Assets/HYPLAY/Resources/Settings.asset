@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86356c65269e24441b830d0ca9ce5360, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  accessToken: user_at_qKrosKhv87QYa0zy3LMmcgZqqanjgcfIjLErU0EoehoiPJABEwqt3OOrSnlmKAQ3
+  appIcon: {fileID: 2800000, guid: 251d4e53e229200488227634f4bb436f, type: 3}
+  appBackground: {fileID: 2800000, guid: 251d4e53e229200488227634f4bb436f, type: 3}
+  appName: GameTest
+  appDescription: A game for test in unity
+  appUrl: https://www.ejemplo.com/
+  currentApp:
+    id: 18a66edf-b14c-4831-a04a-1194b35b9133
+    secretKey: app_sk_zaYysUDzbUkf4qp8UFT8loainysqmM9CcDVftsrhCDAKdsYgtkc89wYZcl71TKgd
+    name: GameApp
+    description: AppTest is a app for test, the objective is fix the problems with
+      the procrastinacion
+    redirectUris:
+    - http://localhost:3000/callback
+    url: 
+    iconImageAsset:
+      id: d4096cdd-60f4-4f7b-801a-4acbe40e09f9
+      cdnUrl: https://assets.hyplay.com/343a4fc7-849c-4591-ab20-7e57bd34e1a2/dd477b4ac08d32c5b1e337c59585e6b3-1716432393754.png
+    backgroundImageAsset:
+      id: d4096cdd-60f4-4f7b-801a-4acbe40e09f9
+      cdnUrl: https://assets.hyplay.com/343a4fc7-849c-4591-ab20-7e57bd34e1a2/dd477b4ac08d32c5b1e337c59585e6b3-1716432393754.png
+  <Token>k__BackingField: DEV_TOKEN

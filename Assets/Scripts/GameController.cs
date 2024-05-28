@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class GameController : MonoBehaviour
     bool am=true;
     private void Start()
     {
+      
+        SceneManager.LoadScene(2,LoadSceneMode.Additive);
         DaysTx.AsignText("Day:" + Days);
     }
     private void Update()

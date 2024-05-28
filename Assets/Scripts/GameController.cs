@@ -5,16 +5,33 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI Clock;
-    float metersCount;
+    [SerializeField] TextOutLinners Clock,DaysTx, scheduleTx;
+    [SerializeField] float speedTime=1f;
+    float CountClock;
     int minutes, seconds;
-   
+    int Days=1;
+    bool am=true;
+    private void Start()
+    {
+        DaysTx.AsignText("Day:" + Days);
+    }
     private void Update()
     {
-         metersCount += Time.deltaTime;
-         minutes = Mathf.FloorToInt(metersCount / 60F);
-         seconds = Mathf.FloorToInt(metersCount % 60F);
-        Clock.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+         CountClock += Time.deltaTime* speedTime;
+         minutes = Mathf.FloorToInt(CountClock / 60F);
+         seconds = Mathf.FloorToInt(CountClock % 60F);
+        Debug.Log(minutes);
+        if (minutes > 12) { 
+            minutes = 1; 
+            am = !am;
+            if (am) Days++;
+            DaysTx.AsignText("Day:"+Days);
+            if (am) scheduleTx.AsignText("am");
+            else scheduleTx.AsignText("pm");
+        }
+        
+        Clock.AsignText(string.Format("{0:00}:{1:00}", minutes, seconds));
+
     }
 
 }

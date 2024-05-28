@@ -1,6 +1,7 @@
 using System;
+#if NEWTONSOFT_JSON
 using Newtonsoft.Json;
-
+#endif
 namespace HYPLAY.Runtime
 {
     [Serializable]
@@ -19,10 +20,16 @@ namespace HYPLAY.Runtime
     [Serializable]
     public class HyplayUser
     {
+        
+        #if NEWTONSOFT_JSON
         [JsonProperty("id")]
+        #endif
         public string Id;
 
-        [JsonProperty("username")] 
+        
+        #if NEWTONSOFT_JSON
+        [JsonProperty("username")]
+        #endif
         public string Username;
     }
 }

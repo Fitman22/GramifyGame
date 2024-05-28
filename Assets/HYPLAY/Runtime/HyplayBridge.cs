@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -85,8 +84,12 @@ namespace HYPLAY.Runtime
                 { "userId", _currentUser.Id }
             };
             var req = UnityWebRequest.Post("https://api.hyplay.com/v1/sessions", 
-                JsonConvert.SerializeObject(body) , 
-                "application/json");
+                HyplayJSON.Serialize(body)
+                #if UNITY_2022_1_OR_NEWER
+                ,"application/json");
+                #else
+                );
+                #endif
             req.method = UnityWebRequest.kHttpVerbDELETE;
             if (SetAuthHeader(req))
             {
@@ -165,7 +168,7 @@ namespace HYPLAY.Runtime
 
             if (req.responseCode == 401)
             {
-                Debug.LogError("Not logged in");
+                Debug.Log("Not logged in");
                 _currentUser = null;
                 IsLoggedIn = false;
                 return new HyplayResponse<HyplayUser>
@@ -175,7 +178,7 @@ namespace HYPLAY.Runtime
                 };
             }
 
-            var user = JsonConvert.DeserializeObject<HyplayUser>(req.downloadHandler.text);
+            var user = HyplayJSON.Deserialize<HyplayUser>(req.downloadHandler.text);
             var error = req.downloadHandler.error;
 
             _currentUser = user;

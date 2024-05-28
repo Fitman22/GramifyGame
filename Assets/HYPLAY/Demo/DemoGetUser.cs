@@ -11,8 +11,8 @@ namespace HYPLAY.Demo
 
         private void Start()
         {
-            if (HyplayBridge.IsLoggedIn) text.text = "Logged in!";
-
+            if (HyplayBridge.IsLoggedIn)
+                text.text = "Logged in!";
         }
 
         public async void Login()

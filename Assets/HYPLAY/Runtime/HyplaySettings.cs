@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using System;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+
 namespace HYPLAY.Runtime
 {
     public class HyplaySettings : ScriptableObject
@@ -26,8 +25,10 @@ namespace HYPLAY.Runtime
         
         [field: SerializeField] public string Token { get; private set; }
 
+        #if UNITY_WEBGL
         [DllImport("__Internal")]
         private static extern void DoLogin(string appid, string url);
+        #endif
         
         public void SetCurrent(HyplayApp current)
         {
@@ -61,12 +62,16 @@ namespace HYPLAY.Runtime
             req.SetRequestHeader("x-authorization", accessToken);
             await req.SendWebRequest();
             
-            return JsonConvert.DeserializeObject<List<HyplayApp>>(req.downloadHandler.text);
+            return HyplayJSON.Deserialize<List<HyplayApp>>(req.downloadHandler.text);
         }
 
         public async void UpdateCurrent()
         {
-            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/apps/{currentApp.id}", JsonConvert.SerializeObject(currentApp), "application/json");
+            #if UNITY_2022_1_OR_NEWER
+            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/apps/{currentApp.id}", HyplayJSON.Serialize(currentApp), "application/json");
+            #else
+            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/apps/{currentApp.id}", HyplayJSON.Serialize(currentApp));
+            #endif
             req.method = "PATCH";
             
             req.SetRequestHeader("x-authorization", accessToken);
@@ -81,11 +86,15 @@ namespace HYPLAY.Runtime
                 { "fileBase64", System.Convert.ToBase64String(data) }
             };
             
-            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/assets", JsonConvert.SerializeObject(body), "application/json");
+            #if UNITY_2022_1_OR_NEWER
+            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/assets", HyplayJSON.Serialize(body), "application/json");
+            #else
+            var req = UnityWebRequest.Post($"https://api.hyplay.com/v1/assets", HyplayJSON.Serialize(body));
+            #endif
             req.SetRequestHeader("x-authorization", accessToken);
             await req.SendWebRequest();
 
-            return JsonConvert.DeserializeObject<HyplayImageAsset>(req.downloadHandler.text);
+            return HyplayJSON.Deserialize<HyplayImageAsset>(req.downloadHandler.text);
         }
         #endif
     }

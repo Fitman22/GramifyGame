@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using HYPLAY.Runtime;
-using Newtonsoft.Json;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -197,15 +196,19 @@ namespace UnityEditor.Hyplay
                     {
                         "redirectUris", new []
                         {
-                            redirect
+                            redirect,
+                            "myapp://token"
                         }
                     },
                     { "url", _appUrl.stringValue }
                 };
 
-                var req = UnityWebRequest.Post("https://api.hyplay.com/v1/apps", JsonConvert.SerializeObject(body), "application/json");
+                #if UNITY_2022_1_OR_NEWER
+                var req = UnityWebRequest.Post("https://api.hyplay.com/v1/apps", HyplayJSON.Serialize(body), "application/json");
+                #else
+                var req = UnityWebRequest.Post("https://api.hyplay.com/v1/apps", HyplayJSON.Serialize(body));
+                #endif
                 
-                Debug.Log(JsonConvert.SerializeObject(body));
                 req.SetRequestHeader("x-authorization", _settings.AccessToken);
                 await req.SendWebRequest();
 
@@ -213,7 +216,7 @@ namespace UnityEditor.Hyplay
                 {
                     var settings = new SerializedObject(_settings);
                     _createAppStatus.text = "Created app :)";
-                    _settings.SetCurrent(JsonConvert.DeserializeObject<HyplayApp>(req.downloadHandler.text));
+                    _settings.SetCurrent(HyplayJSON.Deserialize<HyplayApp>(req.downloadHandler.text));
                     
                     settings.Update();
                     settings.ApplyModifiedProperties();
